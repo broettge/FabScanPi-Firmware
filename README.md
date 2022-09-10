@@ -23,3 +23,4 @@ Currently supported boards:
 - FabScanPi HAT ( original FabScanPi )
 - ZUM Arduino Shield ( used by cyclop 3D Scanner and clones )
 - Sanguinololu ( 3D-Printer board )
+- RAMPS 1.4 ( RepRap Arduino Mega Pololu Shield )
