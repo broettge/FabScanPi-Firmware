@@ -10,6 +10,8 @@
  #include "pins_SANGOINOLOLU.h"
 #elif MB(CNCSHIELD)
  #include "pins_CNCSHIELD.h"
+#elif MB(RAMPS)
+ #include "pins_RAMPS.h"
 #endif
 
 #endif

@@ -15,11 +15,11 @@
 
 #include <Adafruit_NeoPixel.h>
 
-Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, LIGHT_PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, LIGHT_PIN, NEO_RGBW + NEO_KHZ800);
 
-void set_leds(int r, int g, int b){
+void set_leds(int r, int g, int b, int w){
   for(int i=0; i<NUMPIXELS; i++){
-    pixels.setPixelColor(i,pixels.Color(r,g,b));
+    pixels.setPixelColor(i,pixels.Color(r,g,b,w));
   }
   pixels.show();
   delay(100);
@@ -28,7 +28,7 @@ void set_leds(int r, int g, int b){
 
 void initialize_led_driver(){
 	pixels.begin();
-  //set_leds(0,0,0);
+  //set_leds(0,0,0,0);
 }
 
 
@@ -156,11 +156,11 @@ void processCommand() {
 	switch(cmd) {
 		case 4:
 			right_laser_off();
-      left_laser_off();
-			set_leds(parseNumber('R',0),parseNumber('G',0),parseNumber('B',0));
+      		left_laser_off();
+			set_leds(parseNumber('R',0),parseNumber('G',0),parseNumber('B',0),parseNumber('W',0));
 			break;
 		case 5:
-			set_leds(parseNumber('R',0),parseNumber('G',0),parseNumber('B',0));
+			set_leds(parseNumber('R',0),parseNumber('G',0),parseNumber('B',0),parseNumber('W',0));
 			break;
     case 13: 
       turntable_motor_enable();

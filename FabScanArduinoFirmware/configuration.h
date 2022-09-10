@@ -21,16 +21,17 @@
  * BOARD_FABSCANPI    - FabScanPi Hat for Raspberry Pi
  * BOARD_CYCLOP       - Cyclop Scanner ZUM Scan Board
  * BOARD_SANGUINOLOLU - Sanguinololu 3D Printer Board v 1.3
- * BOARD_CNCSHIELD - Arduino Uno with CNC shield V3.0 or newer (see grbl project for pinout)
+ * BOARD_CNCSHIELD    - Arduino Uno with CNC shield V3.0 or newer (see grbl project for pinout)
+ * BOARD_RAMPS        - Arduino Mega (or Mega2560) with RAMPS v1.4 shield
  *
  */
 
 #ifndef MOTHERBOARD
-  #define MOTHERBOARD BOARD_FABSCANPI
+  #define MOTHERBOARD BOARD_RAMPS
 #endif
 
 #ifndef BAUDRATE
-  #define BAUDRATE 57600
+  #define BAUDRATE 115200
 #endif
 
 #define TURN_BLOCKING 1
