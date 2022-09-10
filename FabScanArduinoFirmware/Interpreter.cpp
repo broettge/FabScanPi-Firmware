@@ -15,7 +15,7 @@
 
 #include <Adafruit_NeoPixel.h>
 
-Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, LIGHT_PIN, NEO_RGBW + NEO_KHZ800);
+Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, LIGHT_PIN, NEO_GRBW + NEO_KHZ800);
 
 void set_leds(int r, int g, int b, int w){
   for(int i=0; i<NUMPIXELS; i++){
@@ -100,6 +100,7 @@ void help() {
 	Serial.println(F("Commands:"));
 	Serial.println(F("G00 [T(steps)]; - linear move"));
 	Serial.println(F("G01 [T(steps)] [L(steps)] [F(feedrate)]; - move"));
+  Serial.println(F("M05 [R(value)] [G(value)] [B(value)] [W(value)] ; - set NeoPixel LED values"));
 	Serial.println(F("M17; - enable motors"));
 	Serial.println(F("M18; - disable motors"));
 	Serial.println(F("M19; - turn left laser on"));
