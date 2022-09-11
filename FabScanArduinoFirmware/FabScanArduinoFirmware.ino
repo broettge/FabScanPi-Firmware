@@ -26,23 +26,20 @@ void setup()
   //laser_motor_release();
 
   currStepper = TURNTABLE_STEPPER;  //turntable is default stepper
-  //version();
-  //ready();
 }
 
 void loop() {
   // listen for serial commands
   while (Serial.available() > 0) { // if something is available
     char c = Serial.read(); // get it
-    //if(c=='\r') continue;  // skip it
     Serial.print(c);  // repeat it back so I know you got the message
+    
     if (sofar < MAX_BUF - 1) serialBuffer[sofar++] = c; // store it
+
     if ((c == '\n') || (c == '\r')) { // entire message received
-      // we got a message and it ends with a semicolon
       serialBuffer[sofar] = 0; // end the buffer so string functions work right
       processCommand();  // do something with the command
       ready();
     }
   }
-  turn();
 }

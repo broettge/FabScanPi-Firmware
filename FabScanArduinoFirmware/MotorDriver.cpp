@@ -61,7 +61,7 @@ void step(int motor, int steps, float feedrate){
 
 
 void do_move(long t_steps, long l_steps, float feedrate, boolean block){
-
+Serial.println("T: " + String(t_steps) + ", L: " + String(l_steps) + ", F: " + String(feedrate) + ", B: " + String(block));
  if (block) {
       if (t_steps != 0){
         step_blocking(TURNTABLE_STEPPER, t_steps, feedrate);

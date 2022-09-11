@@ -47,6 +47,26 @@ long step_delay_us;
 // settings
 char mode_abs=0;  // absolute mode??
 
+
+
+/**
+ * remove any leading or trailing spaces from a string.
+ **/
+void strTrim(char* str) {
+    int start = 0; // number of leading spaces
+    char* buffer = str;
+    while (*str && *str++ == ' ') ++start;
+    while (*str++); // move to end of string
+    int end = str - buffer - 1; 
+    while (end > 0 && buffer[end - 1] == ' ') --end; // backup over trailing spaces
+    buffer[end] = 0; // remove trailing spaces
+    if (end <= start || start == 0) return; // exit if no leading spaces or string is now empty
+    str = buffer + start;
+    while ((*buffer++ = *str++));  // remove leading spaces: K&R
+}
+
+
+
 /**
  * Look for character /code/ in the buffer and read the float that immediately follows it.
  * @return the value found.  If nothing is found, /val/ is returned.
@@ -57,7 +77,7 @@ long parseNumber(char code, int val) {
   char *ptr=serialBuffer;  // start at the beginning of buffer
   while((long)ptr > 1 && (*ptr) && (long)ptr < (long)serialBuffer+sofar) {  // walk to the end
     if(*ptr==code) {  // if you find code on your walk,
-      return atoi(ptr+1);  // convert the digits that follow into a float and return it
+      return atol(ptr+1);  // convert the digits that follow into a long int and return it
     }
     ptr=strchr(ptr,' ')+1;  // take a step from here to the letter after the next space
   }
@@ -133,65 +153,72 @@ void settingsmode(int state){
  * Read the input buffer and find any recognized commands.  One G or M command per line.
  */
 void processCommand() {
-
-	int cmd = parseNumber('G',-1);
-	switch(cmd) {
-		case  0: // move linear
-		case  1: // move linear
-			do_move(parseNumber('T',0), parseNumber('L',0), parseFloat('F',0), TURN_NON_BLOCKING);
-			break;
-		case 2: 
-			do_move(parseNumber('T',0), parseNumber('L',0), parseFloat('F',0), TURN_BLOCKING);
-		break;
-		case 6:
-			start_turning();
-			break;
-		case 7:
-			stop_turning();
-			break;
-      
-		default:  break;
-	}
-
-	cmd = parseNumber('M',-1);
-	switch(cmd) {
-		case 4:
-			right_laser_off();
-      		left_laser_off();
-			set_leds(parseNumber('R',0),parseNumber('G',0),parseNumber('B',0),parseNumber('W',0));
-			break;
-		case 5:
-			set_leds(parseNumber('R',0),parseNumber('G',0),parseNumber('B',0),parseNumber('W',0));
-			break;
-    case 13: 
-      turntable_motor_enable();
-      break;
-    case 14: 
-      turntable_motor_release();
-      break;
-		case 17:  // enable motors
-			turntable_motor_enable();
-			break;
-		case 18:  // disable motors
-			turntable_motor_release();
-			break;
-		case 19:
-			left_laser_on();
-			break;
-		case 20:
-			left_laser_off();
-			break;
-		case 21:
-			right_laser_on();
-			break;
-		case 22:
-			right_laser_off();
-			break;
-		case 100:  help();  break;
-		case 200:  version(); break;
-    case 201:  board(); break;
-		default:  break;
-	}
+  strTrim(serialBuffer);
+  
+  if (serialBuffer[0] == 'G'){
+  	int cmd = parseNumber('G',-1);
+  	switch(cmd) {
+  		case  0: // move linear
+  		case  1: // move linear
+  			do_move(parseNumber('T',0), parseNumber('L',0), parseFloat('F',0), TURN_NON_BLOCKING);
+  			break;
+  		case 2: 
+  			do_move(parseNumber('T',0), parseNumber('L',0), parseFloat('F',0), TURN_BLOCKING);
+  		break;
+  		case 6:
+  			start_turning();
+  			break;
+  		case 7:
+  			stop_turning();
+  			break;
+        
+  		default:  break;
+  	}
+  }
+  else if (serialBuffer[0] == 'M'){
+  	int cmd = parseNumber('M',-1);
+  	switch(cmd) {
+  		case 4:
+  			right_laser_off();
+        		left_laser_off();
+  			set_leds(parseNumber('R',0),parseNumber('G',0),parseNumber('B',0),parseNumber('W',0));
+  			break;
+  		case 5:
+  			set_leds(parseNumber('R',0),parseNumber('G',0),parseNumber('B',0),parseNumber('W',0));
+  			break;
+      case 13: 
+        turntable_motor_enable();
+        break;
+      case 14: 
+        turntable_motor_release();
+        break;
+  		case 17:  // enable motors
+  			turntable_motor_enable();
+  			break;
+  		case 18:  // disable motors
+  			turntable_motor_release();
+  			break;
+  		case 19:
+  			left_laser_on();
+  			break;
+  		case 20:
+  			left_laser_off();
+  			break;
+  		case 21:
+  			right_laser_on();
+  			break;
+  		case 22:
+  			right_laser_off();
+  			break;
+  		case 100:  help();  break;
+  		case 200:  version(); break;
+      case 201:  board(); break;
+  		default:  break;
+  	}
+  }
+  else{
+    Serial.println("Invalid Command Ignored!");
+  }
 }
 
 
